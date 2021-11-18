@@ -1,12 +1,11 @@
+FROM python:3.8.1
 FROM pytorch/pytorch
 
-WORKDIR /workspace
-ADD . /workspace
+ENV APP_HOME /app
+WORKDIR $APP_HOME
+
+COPY . /app
 
 RUN pip install -r requirements.txt
 
-CMD [ "python" , "/workspace/app.py" ]
-
-RUN chown -R 42420:42420 /workspace
-
-ENV HOME=/workspace
+ENTRYPOINT ["python", "app.py"]
