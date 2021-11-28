@@ -7,3 +7,5 @@ opencv-python-headless
 matplotlib
 
 seaborn
+
+flask-cors
