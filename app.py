@@ -42,7 +42,7 @@ def predict():
     # Choice of the model
     results = get_prediction(
         img_bytes, dictOfModels[request.form.get("model_choice")])
-    app.logger(f'User selected model : {request.form.get("model_choice")}')
+    # app.logger(f'User selected model : {request.form.get("model_choice")}')
     # Updates Result images with boxes and labels
     results.render()
     # Encoding the resulting image and return it
