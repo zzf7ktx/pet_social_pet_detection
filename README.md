@@ -8,10 +8,13 @@ docker build -t pet/detection .
 docker run -p 2000:5000 pet/detection
 ```
 ### request
-#### Content-Type: form-data: {
+#### Content-Type: 
+```
+form-data: {
     file: file
     model_choice: text
     result_type: text (json or not)
 }
+```
 ### response
 #### Content-Type: application/json or image/jpeg
