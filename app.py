@@ -10,7 +10,7 @@ import sys
 import json
 
 app = Flask(__name__)
-cors = CORS(app)
+cors = CORS(app, supports_credentials=True)
 app.config['CORS_HEADERS'] = 'Content-Type'
 dictOfModels = {}
 
@@ -35,7 +35,7 @@ def get():
 
 
 @app.route('/', methods=['POST'])
-@cross_origin()
+@cross_origin(supports_credentials=True)
 def predict():
     file = extract_img(request)
     img_bytes = file.read()
@@ -51,6 +51,7 @@ def predict():
         temp = results.pandas().xyxy[0].to_json(orient="records")
         parsed = json.loads(temp)
         response = json.dumps(parsed, indent=4)
+        return Response(response, mimetype='application/json')
     else:
         for img in results.imgs:
             RGB_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -59,7 +60,7 @@ def predict():
             response.headers['Content-Type'] = 'image/jpeg'
 
     # Return image with boxes and labels or json
-    return Response(response, mimetype='application/json')
+    return response
 
 
 def extract_img(request):
