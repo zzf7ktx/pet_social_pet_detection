@@ -40,8 +40,11 @@ def predict():
     file = extract_img(request)
     img_bytes = file.read()
     # Choice of the model
+    # Load
+    choice = request.form.get('model_choice')
+    model = dictOfModels[choice]
     results = get_prediction(
-        img_bytes, dictOfModels[request.form.get("model_choice")])
+        img_bytes, model)
     # app.logger(f'User selected model : {request.form.get("model_choice")}')
     # Updates Result images with boxes and labels
     results.render()
@@ -79,6 +82,14 @@ if __name__ == '__main__':
     # Getting directory containing models from command args (or default 'models_train')
     models_directory = 'models_train'
     print(f'Watching for yolov5 models under {models_directory}...')
+    # Choice of the model
+    # Load
+    model_path = os.path.join('./models_train', 'last.pt')
+    model = torch.hub.load('./yolov5', 'custom',
+                           path=model_path, source='local')
+    listOfKeys.append('last')
+    dictOfModels['last'] = model
+    """
     for r, d, f in os.walk(models_directory):
         for file in f:
             if ".pt" in file:
@@ -93,7 +104,7 @@ if __name__ == '__main__':
                 # you would obtain: dictOfModels = {"model1" : model1 , etc}
         for key in dictOfModels:
             listOfKeys.append(key)  # put all the keys in the listOfKeys
-
+    """
     print(
         f'Server now running on ')
 
